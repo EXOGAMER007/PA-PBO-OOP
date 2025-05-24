@@ -2,17 +2,53 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Pengguna {
-  private ArrayList<String> usernames = new ArrayList<>();
-  private ArrayList<String> passwords = new ArrayList<>();
-  private ArrayList<String> roles = new ArrayList<>();
-  private ArrayList<Integer> ids = new ArrayList<>();
-  private ArrayList<String> emails = new ArrayList<>();
-  private ArrayList<String> nomorTelepons = new ArrayList<>();
-  private ArrayList<String> niks = new ArrayList<>();
-  private Scanner input = new Scanner(System.in);
-  private ArrayList<Pinjaman> pinjaman = new ArrayList<>();
-  private Integer penggunaSekarang;
-  private String menu = null;
+  protected ArrayList<String> usernames = new ArrayList<>();
+  protected ArrayList<String> passwords = new ArrayList<>();
+  protected ArrayList<String> roles = new ArrayList<>();
+  protected ArrayList<Integer> ids = new ArrayList<>();
+  protected ArrayList<String> emails = new ArrayList<>();
+  protected ArrayList<String> nomorTelepons = new ArrayList<>();
+  protected ArrayList<String> niks = new ArrayList<>();
+  protected Scanner input = new Scanner(System.in);
+  protected ArrayList<Pinjaman> pinjaman = new ArrayList<>();
+  protected Integer penggunaSekarang;
+  protected String menu = null;
+
+  public ArrayList<String> getUsernames() {
+    return usernames;
+  }
+
+  public ArrayList<String> getPasswords() {
+    return passwords;
+  }
+
+  public ArrayList<String> getRoles() {
+    return roles;
+  }
+
+  public ArrayList<Integer> getIds() {
+    return ids;
+  }
+
+  public ArrayList<String> getEmails() {
+    return emails;
+  }
+
+  public ArrayList<String> getNomorTelepons() {
+    return nomorTelepons;
+  }
+
+  public ArrayList<String> getNiks() {
+    return niks;
+  }
+
+  public ArrayList<Pinjaman> getPinjaman() {
+    return pinjaman;
+  }
+
+  public Integer getPenggunaSekarang() {
+    return penggunaSekarang;
+  }
 
   public Pengguna() {
     usernames.add("admin");
@@ -22,10 +58,18 @@ public class Pengguna {
     nomorTelepons.add("08123456789");
     niks.add("1234567890");
     ids.add(usernames.size());
+
+    // Default user
+    usernames.add("daffa");
+    passwords.add("daffa");
+    roles.add("peminjam");
+    emails.add("daffa@example.com");
+    nomorTelepons.add("08223456789");
+    niks.add("1234567892");
+    ids.add(usernames.size());
   }
 
   public Integer Menu() {
-    Scanner input = new Scanner(System.in);
     try {
       System.out.println("====================================");
       System.out.println("Selamat datang di aplikasi kami");
@@ -73,7 +117,7 @@ public class Pengguna {
       }
       return 1;
     } finally {
-      input.close();
+      // input.close();
     }
   }
 
@@ -93,22 +137,24 @@ public class Pengguna {
   }
 
   public Integer login(String username, String password) {
-  if (usernames.contains(username) && passwords.contains(password)) {
-    int index = usernames.indexOf(username);
-    String role = roles.get(index);
-    int id = ids.get(index);
-    penggunaSekarang = id;
-    if (role.equals("admin")) { // Admin
-      System.out.println("Login successful as admin.");
-      return 1;
-    } else { // User
-      System.out.println("Login successful as user.");
-      return 2;
+    if (usernames.contains(username) && passwords.contains(password)) {
+      int index = usernames.indexOf(username);
+      String role = roles.get(index);
+      int id = ids.get(index);
+      penggunaSekarang = id;
+      if (role.equals("admin")) { // Admin
+        System.out.println("Login successful as admin.");
+        return 1;
+      } else { // User
+        System.out.println("Login successful as user.");
+        return 2;
+      }
+    } else {
+      System.out.println("Invalid username or password.");
+      return 0;
     }
-  } else {
-    System.out.println("Invalid username or password.");
-    return 0;
   }
+
 }
 
 class Admin extends Pengguna {
@@ -140,7 +186,7 @@ class Admin extends Pengguna {
       }
       return 0;
     } finally {
-      input.close();
+      // input.close();
     }
   }
 }
@@ -180,7 +226,7 @@ class User extends Pengguna {
         }
       }
     } finally {
-      input.close();
+      // input.close();
     }
   }
 
@@ -230,53 +276,97 @@ class User extends Pengguna {
     }
   }
 
-    private void editPengajuan() {
-      System.out.println("Edit Pengajuan");
-      System.out.print("Nomor Pengajuan: ");
-      int nomorPengajuan = input.nextInt();
-      if (nomorPengajuan > 0 && nomorPengajuan <= pinjaman.size()) {
-        System.out.print("Jumlah Pinjaman: ");
-        int jumlahPinjaman = input.nextInt();
-        System.out.print("Jangka Waktu Pinjaman (bulan): ");
-        int jangkaWaktuPinjaman = input.nextInt();
-        System.out.print("Bunga Pinjaman (%): ");
-        double bungaPinjaman = input.nextDouble();
-  
-        // Update data pinjaman
-        pinjaman.get(nomorPengajuan - 1).setJumlahPinjaman(jumlahPinjaman);
-        pinjaman.get(nomorPengajuan - 1).setJangkaWaktuPinjaman(jangkaWaktuPinjaman);
-        pinjaman.get(nomorPengajuan - 1).setBungaPinjaman(bungaPinjaman);
-  
-        System.out.println("Pengajuan berhasil diubah.");
-      } else {
-        System.out.println("Nomor pengajuan tidak valid.");
-      }
+  private void editPengajuan() {
+    System.out.println("Edit Pengajuan");
+    System.out.print("Nomor Pengajuan: ");
+    int nomorPengajuan = input.nextInt();
+    if (nomorPengajuan > 0 && nomorPengajuan <= pinjaman.size()) {
+      System.out.print("Jumlah Pinjaman: ");
+      int jumlahPinjaman = input.nextInt();
+      System.out.print("Jangka Waktu Pinjaman (bulan): ");
+      int jangkaWaktuPinjaman = input.nextInt();
+      System.out.print("Bunga Pinjaman (%): ");
+      double bungaPinjaman = input.nextDouble();
+
+      // Update data pinjaman
+      pinjaman.get(nomorPengajuan - 1).setJumlahPinjaman(jumlahPinjaman);
+      pinjaman.get(nomorPengajuan - 1).setJangkaWaktuPinjaman(jangkaWaktuPinjaman);
+      pinjaman.get(nomorPengajuan - 1).setBungaPinjaman(bungaPinjaman);
+
+      System.out.println("Pengajuan berhasil diubah.");
+    } else {
+      System.out.println("Nomor pengajuan tidak valid.");
     }
-  
-    private void batalkanPengajuan() {
-      System.out.println("Batalkan Pengajuan");
-      System.out.print("Nomor Pengajuan: ");
-      int nomorPengajuan = input.nextInt();
-      if (nomorPengajuan > 0 && nomorPengajuan <= pinjaman.size()) {
-        pinjaman.remove(nomorPengajuan - 1);
-        System.out.println("Pengajuan berhasil dibatalkan.");
-      } else {
-        System.out.println("Nomor pengajuan tidak valid.");
-      }
+  }
+
+  private void batalkanPengajuan() {
+    System.out.println("Batalkan Pengajuan");
+    System.out.print("Nomor Pengajuan: ");
+    int nomorPengajuan = input.nextInt();
+    if (nomorPengajuan > 0 && nomorPengajuan <= pinjaman.size()) {
+      pinjaman.remove(nomorPengajuan - 1);
+      System.out.println("Pengajuan berhasil dibatalkan.");
+    } else {
+      System.out.println("Nomor pengajuan tidak valid.");
     }
-  
-    private void catatPembayaran() {
-        System.out.println("Catat Pembayaran");
-        System.out.print("Nomor Pengajuan: ");
-        int nomorPengajuan = input.nextInt();
-        if (nomorPengajuan > 0 && nomorPengajuan <= pinjaman.size()) {
-            System.out.print("Jumlah Pembayaran: ");
-            double jumlahPembayaran = input.nextDouble();
-            pinjaman.get(nomorPengajuan - 1).catatPembayaran(jumlahPembayaran);
-            System.out.println("Pembayaran berhasil dicatat.");
-        } else {
-            System.out.println("Nomor pengajuan tidak valid.");
-        }
+  }
+
+  private void catatPembayaran() {
+    System.out.println("Catat Pembayaran");
+    System.out.print("Nomor Pengajuan: ");
+    int nomorPengajuan = input.nextInt();
+    if (nomorPengajuan > 0 && nomorPengajuan <= pinjaman.size()) {
+      System.out.print("Jumlah Pembayaran: ");
+      double jumlahPembayaran = input.nextDouble();
+      pinjaman.get(nomorPengajuan - 1).catatPembayaran(jumlahPembayaran);
+      System.out.println("Pembayaran berhasil dicatat.");
+    } else {
+      System.out.println("Nomor pengajuan tidak valid.");
     }
+  }
+
+  public void setUsername(ArrayList<String> usernames) {
+    this.usernames = usernames;
+    // super.usernames = usernames;
+  }
+
+  public void setPasswords(ArrayList<String> passwords) {
+    this.passwords = passwords;
+    // super.passwords = passwords;
+  }
+
+  public void setRoles(ArrayList<String> roles) {
+    this.roles = roles;
+    // super.roles = roles;
+  }
+
+  public void setIds(ArrayList<Integer> ids) {
+    this.ids = ids;
+    // super.ids = ids;
+  }
+
+  public void setEmails(ArrayList<String> emails) {
+    this.emails = emails;
+    // super.emails = emails;
+  }
+
+  public void setNomorTelepons(ArrayList<String> nomorTelepons) {
+    this.nomorTelepons = nomorTelepons;
+    // super.nomorTelepons = nomorTelepons;
+  }
+
+  public void setNiks(ArrayList<String> niks) {
+    this.niks = niks;
+    // super.niks = niks;
+  }
+
+  public void setPinjaman(ArrayList<Pinjaman> pinjaman) {
+    this.pinjaman = pinjaman;
+    // super.pinjaman = pinjaman;
+  }
+
+  public void setPenggunaSekarang(Integer penggunaSekarang) {
+    this.penggunaSekarang = penggunaSekarang;
+    // super.penggunaSekarang = penggunaSekarang;
   }
 }
