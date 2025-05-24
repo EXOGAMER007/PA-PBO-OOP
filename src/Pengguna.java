@@ -6,191 +6,231 @@ public class Pengguna {
   ArrayList<String> passwords = new ArrayList<>();
   ArrayList<String> roles = new ArrayList<>();
   ArrayList<Integer> ids = new ArrayList<>();
-  Integer UserSekarang;
+  ArrayList<String> emails = new ArrayList<>();
+  ArrayList<String> nomorTelepons = new ArrayList<>();
+  ArrayList<String> niks = new ArrayList<>();
+  Integer penggunaSekarang;
   String menu = null;
 
   public Pengguna() {
     usernames.add("admin");
     passwords.add("admin");
     roles.add("admin");
-    ids.add(usernames.size());
-
-    // User default
-    // Untuk testing, bisa dihapus jika tidak diperlukan
-    usernames.add("user");
-    passwords.add("user");
-    roles.add("peminjam");
+    emails.add("admin@example.com");
+    nomorTelepons.add("08123456789");
+    niks.add("1234567890");
     ids.add(usernames.size());
   }
 
   public Integer Menu() {
     Scanner input = new Scanner(System.in);
-    System.out.println("====================================");
-    System.out.println("Selamat datang di aplikasi kami");
-    System.out.println("");
-    System.out.println("1. Login");
-    System.out.println("2. Register");
-    System.out.println("3. Exit");
-    System.out.println("");
-    menu = input.nextLine();
-    switch (menu) {
-      case "1":
-        System.out.println("Login");
-        System.out.print("Username: ");
-        String username = input.nextLine();
-        System.out.print("Password: ");
-        String password = input.nextLine();
-        Integer loginResult = login(username, password);
-        if (loginResult == 1) { // Admin
-          return 2;
-        } else if (loginResult == 2) { // User
-          return 3;
-        } else {
-          System.out.println("Login failed.");
+    try {
+      System.out.println("====================================");
+      System.out.println("Selamat datang di aplikasi kami");
+      System.out.println("");
+      System.out.println("1. Masuk");
+      System.out.println("2. Daftar");
+      System.out.println("3. Keluar");
+      System.out.println("");
+      menu = input.nextLine();
+      switch (menu) {
+        case "1":
+          System.out.println("Masuk");
+          System.out.print("Nama Pengguna: ");
+          String username = input.nextLine();
+          System.out.print("Kata Sandi: ");
+          String password = input.nextLine();
+          Integer hasilMasuk = masuk(username, password);
+          if (hasilMasuk == 1) { // Admin
+            return 2;
+          } else if (hasilMasuk == 2) { // Pengguna
+            return 3;
+          } else {
+            System.out.println("Gagal masuk.");
+            break;
+          }
+        case "2":
+          System.out.println("Daftar");
+          System.out.print("NIK: ");
+          String nik = input.nextLine();
+          System.out.print("Nama Pengguna: ");
+          String usernameBaru = input.nextLine();
+          System.out.print("Email: ");
+          String email = input.nextLine();
+          System.out.print("Nomor Telepon: ");
+          String nomorTelepon = input.nextLine();
+          System.out.print("Kata Sandi: ");
+          String passwordBaru = input.nextLine();
+          daftar(nik, usernameBaru, email, nomorTelepon, passwordBaru, "pengguna");
           break;
-        }
-      case "2":
-        System.out.println("Register");
-        System.out.print("Username: ");
-        String username2 = input.nextLine();
-        System.out.print("Password: ");
-        String password2 = input.nextLine();
-        register(username2, password2, "peminjam");
-        break;
-      case "3":
-        System.out.println("Exit");
-        input.close();
-        return 0;
-      default:
-        System.out.println("Inputan tidak valid");
+        case "3":
+          System.out.println("Keluar");
+          return 0;
+        default:
+          System.out.println("Masukan tidak valid");
+      }
+      return 1;
+    } finally {
+      input.close();
     }
-    return 1;
   }
 
-  void register(String username, String password, String role) {
+  void daftar(String nik, String username, String email, String nomorTelepon, String password, String role) {
     if (usernames.contains(username)) {
-      System.out.println("Username already exists.");
+      System.out.println("Nama pengguna sudah ada.");
     } else {
       usernames.add(username);
       passwords.add(password);
       roles.add(role);
+      emails.add(email);
+      nomorTelepons.add(nomorTelepon);
+      niks.add(nik);
       ids.add(usernames.size());
-      System.out.println("Registration successful.");
+      System.out.println("Pendaftaran berhasil.");
     }
   }
 
-  Integer login(String username, String password) {
+  Integer masuk(String username, String password) {
     if (usernames.contains(username) && passwords.contains(password)) {
       int index = usernames.indexOf(username);
       String role = roles.get(index);
       int id = ids.get(index);
-      // System.out.println("Login successful.");
-      // System.out.println("Role: " + role);
-      // System.out.println("ID: " + id);
-      UserSekarang = id;
+      penggunaSekarang = id;
       if (role.equals("admin")) { // Admin
-        System.out.println("Login successful as admin.");
+        System.out.println("Berhasil masuk sebagai admin.");
         return 1;
-      } else { // User
-        System.out.println("Login successful as user.");
+      } else { // Pengguna
+        System.out.println("Berhasil masuk sebagai pengguna.");
         return 2;
       }
     } else {
-      System.out.println("Invalid username or password.");
+      System.out.println("Nama pengguna atau kata sandi salah.");
     }
     return 0;
   }
 }
 
-class admin extends Pengguna {
+class Admin extends Pengguna {
   @Override
   public Integer Menu() {
     System.out.println("Menu Admin");
-    System.out.println("1. Add User");
-    System.out.println("2. Delete User");
-    System.out.println("3. View Users");
-    System.out.println("4. Exit");
+    System.out.println("1. Tambah Pengguna");
+    System.out.println("2. Hapus Pengguna");
+    System.out.println("3. Lihat Pengguna");
+    System.out.println("4. Keluar");
     Scanner input = new Scanner(System.in);
-    super.menu = input.nextLine();
-    switch (super.menu) {
-      case "1":
-        System.out.println("Add User");
-        break;
-      case "2":
-        System.out.println("Delete User");
-        break;
-      case "3":
-        System.out.println("View Users");
-        break;
-      case "4":
-        System.out.println("Exit");
-        return 1;
-      default:
-        System.out.println("Inputan tidak valid");
+    try {
+      super.menu = input.nextLine();
+      switch (super.menu) {
+        case "1":
+          System.out.println("Tambah Pengguna");
+          break;
+        case "2":
+          System.out.println("Hapus Pengguna");
+          break;
+        case "3":
+          System.out.println("Lihat Pengguna");
+          break;
+        case "4":
+          System.out.println("Keluar");
+          return 1;
+        default:
+          System.out.println("Masukan tidak valid");
+      }
+      return 0;
+    } finally {
+      input.close();
     }
-    return 0;
   }
 }
 
-class user extends Pengguna {
+public class User extends Pengguna {
   @Override
   public Integer Menu() {
-    System.out.println("\nMenu Pengguna:");
-    System.out.println("1. Ajukan Pinjaman");
-    System.out.println("2. Lihat Riwayat Pinjaman");
-    System.out.println("3. Bayar Pinjaman");
-    System.out.println("4. Logout");
-    System.out.print("Pilih opsi: ");
     Scanner input = new Scanner(System.in);
-    super.menu = input.nextLine();
-
-    switch (super.menu) {
-      case "1":
-        // System.out.print("Masukkan deskripsi pinjaman: ");
-        // String deskripsi = input.nextLine();
-        // userPinjaman.add(UserSaatIni);
-        // riwayatPinjaman.add(deskripsi);
-        // System.out.println("Pengajuan pinjaman berhasil.");
-        break;
-      case "2":
-        // System.out.println("Riwayat Pinjaman Anda:");
-        // boolean ada = false;
-        // for (int i = 0; i < userPinjaman.size(); i++) {
-        // if (userPinjaman.get(i).equals(UserSaatIni)) {
-        // System.out.println("- " + riwayatPinjaman.get(i));
-        // ada = true;
-        // }
-        // }
-        // if (!ada) {
-        // System.out.println("Belum ada riwayat pinjaman.");
-        // }
-        break;
-      case "3":
-        // System.out.print("Masukkan ID pinjaman yang ingin dibayar: ");
-        // String idPinjaman = input.nextLine();
-        // boolean found = false;
-        // for (int i = 0; i < userPinjaman.size(); i++) {
-        // if (userPinjaman.get(i).equals(UserSaatIni) &&
-        // riwayatPinjaman.get(i).equals(idPinjaman)) {
-        // userPinjaman.remove(i);
-        // riwayatPinjaman.remove(i);
-        // System.out.println("Pembayaran pinjaman berhasil.");
-        // found = true;
-        // break;
-        // }
-        // }
-        // if (!found) {
-        // System.out.println("ID pinjaman tidak ditemukan.");
-        // }
-        break;
-
-      case "4":
-        System.out.println("Logout berhasil.");
-        return 0;
-      default:
-        System.out.println("Pilihan tidak valid.");
-
+    try {
+      System.out.println("====================================");
+      System.out.println("Menu Pengguna");
+      System.out.println("1. Lihat Profil");
+      System.out.println("2. Ajukan Pinjaman");
+      System.out.println("3. Lihat Status Pengajuan");
+      System.out.println("4. Edit Pengajuan");
+      System.out.println("5. Batalkan Pengajuan");
+      System.out.println("6. Catat Pembayaran");
+      System.out.println("7. Keluar");
+      System.out.println("");
+      super.menu = input.nextLine();
+      switch (super.menu) {
+        case "1":
+          System.out.println("Lihat Profil");
+          if (penggunaSekarang != null) {
+            int index = ids.indexOf(penggunaSekarang);
+            System.out.println("NIK: " + niks.get(index));
+            System.out.println("Nama Pengguna: " + usernames.get(index));
+            System.out.println("Email: " + emails.get(index));
+            System.out.println("Nomor Telepon: " + nomorTelepons.get(index));
+            System.out.println("Peran: " + roles.get(index));
+            System.out.println("ID: " + ids.get(index));
+          } else {
+            System.out.println("Tidak ada pengguna yang sedang masuk.");
+          }
+          break;
+        case "2":
+          System.out.println("Ajukan Pinjaman");
+          System.out.print("Jumlah Pinjaman: ");
+          double jumlah = Double.parseDouble(input.nextLine());
+          System.out.println("Pilih jangka waktu (1: 3 bulan, 2: 6 bulan, 3: 1 tahun): ");
+          int jangkaWaktu = Integer.parseInt(input.nextLine());
+          String periode = "";
+          double bunga = 0.0;
+          switch (jangkaWaktu) {
+            case 1: periode = "3 bulan"; bunga = 0.05; break;
+            case 2: periode = "6 bulan"; bunga = 0.10; break;
+            case 3: periode = "1 tahun"; bunga = 0.15; break;
+            default: System.out.println("Jangka waktu tidak valid."); break;
+          }
+          double total = jumlah + (jumlah * bunga);
+          System.out.println("Alasan Pinjaman: ");
+          String alasan = input.nextLine();
+          System.out.println("Total dengan bunga (" + (bunga * 100) + "%): " + total);
+          System.out.println("Pengajuan berhasil diajukan. Status: Menunggu");
+          break;
+        case "3":
+          System.out.println("Lihat Status Pengajuan");
+          System.out.println("Status: Menunggu (Contoh, perlu implementasi data pengajuan)");
+          break;
+        case "4":
+          System.out.println("Edit Pengajuan");
+          if (penggunaSekarang != null) {
+            System.out.println("Masukkan jumlah baru: ");
+            double jumlahBaru = Double.parseDouble(input.nextLine());
+            System.out.println("Pilih jangka waktu baru (1: 3 bulan, 2: 6 bulan, 3: 1 tahun): ");
+            int jangkaWaktuBaru = Integer.parseInt(input.nextLine());
+            System.out.println("Pengajuan diperbarui. Status: Menunggu");
+          } else {
+            System.out.println("Masuk terlebih dahulu.");
+          }
+          break;
+        case "5":
+          System.out.println("Batalkan Pengajuan");
+          System.out.println("Pengajuan dibatalkan.");
+          break;
+        case "6":
+          System.out.println("Catat Pembayaran");
+          System.out.print("Jumlah Pembayaran: ");
+          double pembayaran = Double.parseDouble(input.nextLine());
+          System.out.println("Pembayaran sebesar " + pembayaran + " berhasil dicatat. Status: Diperbarui");
+          break;
+        case "7":
+          System.out.println("Keluar");
+          penggunaSekarang = null;
+          return 1;
+        default:
+          System.out.println("Masukan tidak valid");
+      }
+      return 0;
+    } finally {
+      input.close();
     }
-    return 0;
   }
 }
