@@ -1,25 +1,39 @@
 public class Pinjaman {
-    private String idPinjaman;
-    private String deskripsi;
-    private String status;
-    private String tanggalPengajuan;
-    private String tanggalPencairan;
-    private String tanggalPelunasan;
+    private int jumlahPinjaman;
+    private int jangkaWaktuPinjaman;
+    private double bungaPinjaman;
 
-    public Pinjaman(String idPinjaman, String deskripsi, String status, String tanggalPengajuan, String tanggalPencairan, String tanggalPelunasan) {
-        this.idPinjaman = idPinjaman;
-        this.deskripsi = deskripsi;
-        this.status = status;
-        this.tanggalPengajuan = tanggalPengajuan;
-        this.tanggalPencairan = tanggalPencairan;
-        this.tanggalPelunasan = tanggalPelunasan;
+    public void catatPembayaran(double jumlahPembayaran) {
+        System.out.println("Pembayaran: $" + jumlahPembayaran);
     }
 
-    // Getter and Setter methods
-    public String getIdPinjaman() {
-        return idPinjaman;
+    public Pinjaman(int jumlahPinjaman, int jangkaWaktuPinjaman, double bungaPinjaman) {
+        this.jumlahPinjaman = jumlahPinjaman;
+        this.jangkaWaktuPinjaman = jangkaWaktuPinjaman;
+        this.bungaPinjaman = bungaPinjaman;
     }
-    public void setIdPinjaman(String idPinjaman) {
-        this.idPinjaman = idPinjaman;
+
+    public int getJumlahPinjaman() {
+        return jumlahPinjaman;
+    }
+
+    public void setJumlahPinjaman(int jumlahPinjaman) {
+        this.jumlahPinjaman = jumlahPinjaman;
+    }
+
+    public int getJangkaWaktuPinjaman() {
+        return jangkaWaktuPinjaman;
+    }
+
+    public void setJangkaWaktuPinjaman(int jangkaWaktuPinjaman) {
+        this.jangkaWaktuPinjaman = jangkaWaktuPinjaman;
+    }
+
+    public double getBungaPinjaman() {
+        return bungaPinjaman;
+    }
+
+    public void setBungaPinjaman(double bungaPinjaman) {
+        this.bungaPinjaman = bungaPinjaman;
     }
 }
